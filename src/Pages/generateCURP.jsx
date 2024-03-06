@@ -1,7 +1,9 @@
+import GenerateCurpForm from "../components/generateFORM";
+
 function GenerateCURP() {
     return (
         <div>
-            <h1>Generate CURP</h1>
+            <GenerateCurpForm/>
         </div>
     );
 }
