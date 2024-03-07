@@ -34,3 +34,9 @@ body {
 .error {
     color: red;
 }
+
+@media (max-width: 768px) {
+    .form {
+        min-width: 8vh;
+    }
+}
