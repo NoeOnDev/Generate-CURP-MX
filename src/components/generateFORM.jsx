@@ -91,9 +91,8 @@ function GenerateCurpForm() {
         if (isValidCode) {
             const curpData = generateCurp(formData);
             setCurp(curpData);
-            setShowMessage(true);
         } else {
-            alert('Por favor, ingrese un código de acceso válido.');
+            setShowMessage(true);
         }
     };
 
@@ -202,7 +201,7 @@ function GenerateCurpForm() {
                     <div className="mb-3">
                         <label htmlFor="inputCode" className="form-label">Ingrese el Código de Acceso</label>
                         <input type="text" className="form-control" id="inputCode" value={inputCode} onChange={handleCodeChange} />
-                        {showMessage && (isValidCode ? <p>Código de acceso válido</p> : <p>Código de acceso inválido</p>)}
+                        {showMessage && (isValidCode ? <p className={styles.curp}>Código de acceso válido</p> : <p className={styles.error}>Código de acceso inválido</p>)}
                     </div>
                     <button type="submit" className="btn btn-primary">Generar</button>
                     <div className={styles.spacer}>

@@ -30,3 +30,7 @@ body {
 .curp {
     color: green;
 }
+
+.error {
+    color: red;
+}
