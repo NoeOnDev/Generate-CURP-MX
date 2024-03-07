@@ -1,6 +1,14 @@
+import React, { useState } from 'react';
 import styles from '../assets/styles/generateForm.module.css'
 
 function GenerateCurpForm() {
+    const [form, setForm] = useState({
+        name: '',
+        lastName: '',
+        birthdate: '',
+        gender: '',
+        state: ''
+    });
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
