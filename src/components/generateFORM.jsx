@@ -1,14 +1,6 @@
-import React, { useState } from 'react';
 import styles from '../assets/styles/generateForm.module.css'
 
 function GenerateCurpForm() {
-    const [form, setForm] = useState({
-        name: '',
-        lastName: '',
-        birthdate: '',
-        gender: '',
-        state: ''
-    });
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
@@ -23,12 +15,12 @@ function GenerateCurpForm() {
                 <form className={styles.form}>
                     <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Nombre(s)</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                        <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
                         <div id="emailHelp" className="form-text"></div>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="exampleInputPassword1" className="form-label">Apellidos</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" />
+                        <input type="text" className="form-control" id="exampleInputPassword1" />
                         <div id="passwordHelp" className="form-text"></div>
                     </div>
                     <div className="mb-3">
@@ -53,10 +45,9 @@ function GenerateCurpForm() {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="state" className="form-label">Estado</label>
-                        <select className="form-select" id="state">
-                            <option selected>Selecciona tu estado</option>
+                        <select className="form-select" id="state" defaultValue="">
+                            <option value="">Selecciona tu estado</option>
                             <option value="AGUASCALIENTES">AGUASCALIENTES</option>
-                            <option value="BAJA CALIFORNIA">BAJA CALIFORNIA</option>
                             <option value="BAJA CALIFORNIA SUR">BAJA CALIFORNIA SUR</option>
                             <option value="CAMPECHE">CAMPECHE</option>
                             <option value="CHIAPAS">CHIAPAS</option>
