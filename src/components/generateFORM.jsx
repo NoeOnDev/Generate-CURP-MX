@@ -88,9 +88,13 @@ function GenerateCurpForm() {
   
     const handleSubmit = (e) => {
         e.preventDefault();
-        const curpData = generateCurp(formData);
-        setCurp(curpData);
-        setShowMessage(true);
+        if (isValidCode) {
+            const curpData = generateCurp(formData);
+            setCurp(curpData);
+            setShowMessage(true);
+        } else {
+            alert('Por favor, ingrese un código de acceso válido.');
+        }
     };
 
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
@@ -200,7 +204,7 @@ function GenerateCurpForm() {
                         <input type="text" className="form-control" id="inputCode" value={inputCode} onChange={handleCodeChange} />
                         {showMessage && (isValidCode ? <p>Código de acceso válido</p> : <p>Código de acceso inválido</p>)}
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary">Generar</button>
                     <div className={styles.spacer}>
                         {curp && <p>CURP Generada:</p>}
                         <p className={styles.curp}>{curp}</p>
