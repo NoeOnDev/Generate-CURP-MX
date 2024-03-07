@@ -18,3 +18,15 @@ body {
 .form {
     min-width: 70vh;
 }
+
+.spacer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 2rem;
+}
+
+.curpc {
+    color: green;
+}

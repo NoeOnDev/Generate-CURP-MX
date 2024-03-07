@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import styles from '../assets/styles/generateForm.module.css'
 
 const estados = {
@@ -46,6 +46,8 @@ function GenerateCurpForm() {
         genero: '',
         estado: ''
     });
+    const [curp, setCurp] = useState('');
+    const [errors, setErrors] = useState({});
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -64,8 +66,29 @@ function GenerateCurpForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const curpData = generateCurp(formData);
-        alert(`CURP Generada: ${curpData}`);
+        const newErrors = {};
+        if (!formData.nombre.trim()) {
+            newErrors.nombre = 'Por favor ingresa tu nombre';
+        }
+        if (!formData.apellidos.trim()) {
+            newErrors.apellidos = 'Por favor ingresa tus apellidos';
+        }
+        if (!formData.fechaNacimiento) {
+            newErrors.fechaNacimiento = 'Por favor ingresa tu fecha de nacimiento';
+        }
+        if (!formData.genero) {
+            newErrors.genero = 'Por favor selecciona tu género';
+        }
+        if (!formData.estado) {
+            newErrors.estado = 'Por favor selecciona tu estado';
+        }
+
+        if (Object.keys(newErrors).length === 0) {
+            const curpData = generateCurp(formData);
+            setCurp(curpData);
+        } else {
+            setErrors(newErrors);
+        }
     };
 
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
@@ -95,8 +118,8 @@ function GenerateCurpForm() {
             <nav className="navbar navbar-light bg-light">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
-                    <img src="/spellbook.png" alt="" width="30" height="24" className="d-inline-block align-text-top" />
-                    NoeOnCURP
+                        <img src="/spellbook.png" alt="" width="30" height="24" className="d-inline-block align-text-top" />
+                        NoeOnCURP
                     </a>
                 </div>
             </nav>
@@ -104,15 +127,18 @@ function GenerateCurpForm() {
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="nombre" className="form-label">Nombre(s)</label>
-                        <input type="text" className="form-control" id="nombre" value={formData.nombre} onChange={handleInputChange} />
+                        <input type="text" className={`form-control ${errors.nombre && 'is-invalid'}`} id="nombre" value={formData.nombre} onChange={handleInputChange} />
+                        {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
                     </div>
                     <div className="mb-3">
                         <label htmlFor="apellidos" className="form-label">Apellidos</label>
-                        <input type="text" className="form-control" id="apellidos" value={formData.apellidos} onChange={handleInputChange} />
+                        <input type="text" className={`form-control ${errors.apellidos && 'is-invalid'}`} id="apellidos" value={formData.apellidos} onChange={handleInputChange} />
+                        {errors.apellidos && <div className="invalid-feedback">{errors.apellidos}</div>}
                     </div>
                     <div className="mb-3">
                         <label htmlFor="fechaNacimiento" className="form-label">Fecha de nacimiento</label>
-                        <input type="date" className="form-control" id="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleInputChange} />
+                        <input type="date" className={`form-control ${errors.fechaNacimiento && 'is-invalid'}`} id="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleInputChange} />
+                        {errors.fechaNacimiento && <div className="invalid-feedback">{errors.fechaNacimiento}</div>}
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Género</label> <br />
@@ -128,10 +154,11 @@ function GenerateCurpForm() {
                                 Mujer
                             </label>
                         </div>
+                        {errors.genero && <div className="invalid-feedback d-block">{errors.genero}</div>}
                     </div>
                     <div className="mb-3">
                         <label htmlFor="estado" className="form-label">Estado</label>
-                        <select className="form-select" id="estado" value={formData.estado} onChange={handleInputChange}>
+                        <select className={`form-select ${errors.estado && 'is-invalid'}`} id="estado" value={formData.estado} onChange={handleInputChange}>
                             <option value="">Selecciona tu estado</option>
                             <option value="AGUASCALIENTES">AGUASCALIENTES</option>
                             <option value="BAJA CALIFORNIA SUR">BAJA CALIFORNIA SUR</option>
@@ -164,9 +191,14 @@ function GenerateCurpForm() {
                             <option value="VERACRUZ">VERACRUZ</option>
                             <option value="YUCATAN">YUCATAN</option>
                             <option value="ZACATECAS">ZACATECAS</option>
-                        </select>
+                            </select>
+                        {errors.estado && <div className="invalid-feedback">{errors.estado}</div>}
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
+                    <div className={styles.spacer}>
+                        {curp && <p>CURP Generada: </p>}
+                        <p className={styles.curpc}>{curp}</p>
+                    </div>
                 </form>
             </div>
         </div>
