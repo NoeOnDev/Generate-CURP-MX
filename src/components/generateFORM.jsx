@@ -71,29 +71,23 @@ function GenerateCurpForm() {
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
         const apellidosArray = apellidos.split(' ');
         const primerApellido = apellidosArray[0];
-        const segundoApellido = apellidosArray.length > 1 ? apellidosArray[1] : '';
-        
+        const segundoApellido = apellidosArray[1] || '';
         const primerApellidoLetras = primerApellido.substr(0, 2).toUpperCase();
         const segundoApellidoLetra = segundoApellido.substr(0, 1).toUpperCase();
         const nombreLetra = nombre.substr(0, 1).toUpperCase();
-        
-        const fechaFormato = fechaNacimiento.split('-').slice(2).join('/');
-        
+        const fechaFormato = fechaNacimiento.replace(/-/g, '').substr(2);
         const generoLetra = genero === 'M' ? 'H' : 'M';
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
-        
         const primeraConsonanteInterna = (str) => {
             const match = str.substr(1).match(/[bcdfghjklmnpqrstvwxyz]/i);
             return match ? match[0].toUpperCase() : 'X';
         };
-        
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
-        const segundoApellidoConsonanteInterna = segundoApellido ? primeraConsonanteInterna(segundoApellido) : 'X';
+        const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(nombre);
-    
+
         return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     };
-    
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
