@@ -118,6 +118,7 @@ function GenerateCurpForm() {
     
         return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     };
+    
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
