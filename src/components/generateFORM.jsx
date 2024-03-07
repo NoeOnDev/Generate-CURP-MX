@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Barcode from 'react-barcode'
 import styles from '../assets/styles/generateForm.module.css'
 
 const generateRandomCode = () => {
@@ -59,6 +60,7 @@ function GenerateCurpForm() {
     const [accessCode, setAccessCode] = useState('');
     const [inputCode, setInputCode] = useState('');
     const [isValidCode, setIsValidCode] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
   
     useEffect(() => {
       const newCode = generateRandomCode();
@@ -86,9 +88,10 @@ function GenerateCurpForm() {
     };
   
     const handleSubmit = (e) => {
-      e.preventDefault();
-      const curpData = generateCurp(formData);
-      setCurp(curpData);
+        e.preventDefault();
+        const curpData = generateCurp(formData);
+        setCurp(curpData);
+        setShowMessage(true);
     };
 
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
@@ -196,11 +199,12 @@ function GenerateCurpForm() {
                     <div className="mb-3">
                         <label htmlFor="inputCode" className="form-label">Ingrese el Código de Acceso</label>
                         <input type="text" className="form-control" id="inputCode" value={inputCode} onChange={handleCodeChange} />
+                        {showMessage && (isValidCode ? <p>Código de acceso válido</p> : <p>Código de acceso inválido</p>)}
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <div className={styles.spacer}>
-                        {curp && <p>CURP Generada: {curp}</p>}
-                        {isValidCode ? <p>Código de acceso válido</p> : <p>Código de acceso inválido</p>}
+                        {curp && <p>CURP Generada:</p>}
+                        <p className={styles.curp}>{curp}</p>
                     </div>
                 </form>
             </div>
