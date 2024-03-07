@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import styles from '../assets/styles/generateForm.module.css'
 
 function GenerateCurpForm() {
