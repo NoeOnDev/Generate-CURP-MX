@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Barcode from 'react-barcode'
 import styles from '../assets/styles/generateForm.module.css'
 
 const generateRandomCode = () => {
