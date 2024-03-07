@@ -1,6 +1,43 @@
 import React, { useState } from 'react';
 import styles from '../assets/styles/generateForm.module.css'
 
+const estados = {
+    "AGUASCALIENTES": "AS",
+    "BAJA CALIFORNIA": "BC",
+    "BAJA CALIFORNIA SUR": "BS",
+    "CAMPECHE": "CC",
+    "CHIAPAS": "CS",
+    "CHIHUAHUA": "CH",
+    "CIUDAD DE MEXICO": "DF",
+    "COAHUILA": "CL",
+    "COLIMA": "CM",
+    "DURANGO": "DG",
+    "ESTADO DE MEXICO": "MC",
+    "GUANAJUATO": "GT",
+    "GUERRERO": "GR",
+    "HIDALGO": "HG",
+    "JALISCO": "JC",
+    "MICHOACAN": "MN",
+    "MORELOS": "MS",
+    "NAYARIT": "NT",
+    "NUEVO LEON": "NL",
+    "OAXACA": "OC",
+    "PUEBLA": "PL",
+    "QUERETARO": "QT",
+    "QUINTANA ROO": "QR",
+    "SAN LUIS POTOSI": "SP",
+    "SINALOA": "SL",
+    "SONORA": "SR",
+    "TABASCO": "TC",
+    "TAMAULIPAS": "TS",
+    "TLAXCALA": "TL",
+    "VERACRUZ": "VZ",
+    "YUCATAN": "YN",
+    "ZACATECAS": "ZS",
+    "NACIDO EN EL EXTRANJERO": "NE"
+};
+
+
 function GenerateCurpForm() {
     const [formData, setFormData] = useState({
         nombre: '',
@@ -34,23 +71,29 @@ function GenerateCurpForm() {
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
         const apellidosArray = apellidos.split(' ');
         const primerApellido = apellidosArray[0];
-        const segundoApellido = apellidosArray[1] || '';
+        const segundoApellido = apellidosArray.length > 1 ? apellidosArray[1] : '';
+        
         const primerApellidoLetras = primerApellido.substr(0, 2).toUpperCase();
         const segundoApellidoLetra = segundoApellido.substr(0, 1).toUpperCase();
         const nombreLetra = nombre.substr(0, 1).toUpperCase();
-        const fechaFormato = fechaNacimiento.replace(/-/g, '').substr(2);
+        
+        const fechaFormato = fechaNacimiento.split('-').slice(2).join('/');
+        
         const generoLetra = genero === 'M' ? 'H' : 'M';
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
+        
         const primeraConsonanteInterna = (str) => {
             const match = str.substr(1).match(/[bcdfghjklmnpqrstvwxyz]/i);
             return match ? match[0].toUpperCase() : 'X';
         };
+        
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
-        const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
+        const segundoApellidoConsonanteInterna = segundoApellido ? primeraConsonanteInterna(segundoApellido) : 'X';
         const nombreConsonanteInterna = primeraConsonanteInterna(nombre);
-
+    
         return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     };
+    
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
@@ -62,40 +105,37 @@ function GenerateCurpForm() {
                 </div>
             </nav>
             <div className={styles.container2}>
-                <form className={styles.form}>
+                <form className={styles.form} onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label">Nombre(s)</label>
-                        <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-                        <div id="emailHelp" className="form-text"></div>
+                        <label htmlFor="nombre" className="form-label">Nombre(s)</label>
+                        <input type="text" className="form-control" id="nombre" value={formData.nombre} onChange={handleInputChange} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="exampleInputPassword1" className="form-label">Apellidos</label>
-                        <input type="text" className="form-control" id="exampleInputPassword1" />
-                        <div id="passwordHelp" className="form-text"></div>
+                        <label htmlFor="apellidos" className="form-label">Apellidos</label>
+                        <input type="text" className="form-control" id="apellidos" value={formData.apellidos} onChange={handleInputChange} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="birthdate" className="form-label">Fecha de nacimiento</label>
-                        <input type="date" className="form-control" id="birthdate" />
-                        <div id="birthdateHelp" className="form-text"></div>
+                        <label htmlFor="fechaNacimiento" className="form-label">Fecha de nacimiento</label>
+                        <input type="date" className="form-control" id="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleInputChange} />
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Género</label> <br />
                         <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="gender" id="genderMale" value="M" />
+                            <input className="form-check-input" type="radio" name="genero" id="generoMale" value="M" checked={formData.genero === 'M'} onChange={handleGenderChange} />
                             <label className="form-check-label" htmlFor="genderMale">
                                 Hombre
                             </label>
                         </div>
                         <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="radio" name="gender" id="genderFemale" value="F" />
+                            <input className="form-check-input" type="radio" name="genero" id="generoFemale" value="F" checked={formData.genero === 'F'} onChange={handleGenderChange} />
                             <label className="form-check-label" htmlFor="genderFemale">
                                 Mujer
                             </label>
                         </div>
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="state" className="form-label">Estado</label>
-                        <select className="form-select" id="state" defaultValue="">
+                        <label htmlFor="estado" className="form-label">Estado</label>
+                        <select className="form-select" id="estado" value={formData.estado} onChange={handleInputChange}>
                             <option value="">Selecciona tu estado</option>
                             <option value="AGUASCALIENTES">AGUASCALIENTES</option>
                             <option value="BAJA CALIFORNIA SUR">BAJA CALIFORNIA SUR</option>
