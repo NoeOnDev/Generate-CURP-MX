@@ -1,5 +1,5 @@
-import { BrowserRouter,Route, Routes } from "react-router-dom";
-import GenerateCURP from "../Pages/generateCURP";
+import { BrowserRouter,Route, Routes } from "react-router-dom"
+import GenerateCURP from "../Pages/generateCURP"
 
 
 function App() {
