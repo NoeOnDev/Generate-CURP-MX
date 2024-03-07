@@ -55,6 +55,7 @@ function GenerateCurpForm() {
             ...prevState,
             [id]: value
         }));
+        validateField(id, value);
     };
 
     const handleGenderChange = (e) => {
@@ -91,6 +92,50 @@ function GenerateCurpForm() {
         }
     };
 
+    const validateField = (id, value) => {
+        const newErrors = { ...errors };
+        switch (id) {
+            case 'nombre':
+                if (!value.trim()) {
+                    newErrors.nombre = 'Por favor ingresa tu nombre';
+                } else {
+                    delete newErrors.nombre;
+                }
+                break;
+            case 'apellidos':
+                if (!value.trim()) {
+                    newErrors.apellidos = 'Por favor ingresa tus apellidos';
+                } else {
+                    delete newErrors.apellidos;
+                }
+                break;
+            case 'fechaNacimiento':
+                if (!value) {
+                    newErrors.fechaNacimiento = 'Por favor ingresa tu fecha de nacimiento';
+                } else {
+                    delete newErrors.fechaNacimiento;
+                }
+                break;
+            case 'genero':
+                if (!value) {
+                    newErrors.genero = 'Por favor selecciona tu género';
+                } else {
+                    delete newErrors.genero;
+                }
+                break;
+            case 'estado':
+                if (!value) {
+                    newErrors.estado = 'Por favor selecciona tu estado';
+                } else {
+                    delete newErrors.estado;
+                }
+                break;
+            default:
+                break;
+        }
+        setErrors(newErrors);
+    };
+
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
         const apellidosArray = apellidos.split(' ');
         const primerApellido = apellidosArray[0];
@@ -113,6 +158,7 @@ function GenerateCurpForm() {
     
         return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     };
+    
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
@@ -191,7 +237,7 @@ function GenerateCurpForm() {
                             <option value="VERACRUZ">VERACRUZ</option>
                             <option value="YUCATAN">YUCATAN</option>
                             <option value="ZACATECAS">ZACATECAS</option>
-                            </select>
+                        </select>
                         {errors.estado && <div className="invalid-feedback">{errors.estado}</div>}
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
