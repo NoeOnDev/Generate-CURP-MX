@@ -1,9 +1,18 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
 .container {
+    min-height: 100vh;
+}
+
+.container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 90vh;
 }
 
 .form {
