@@ -74,7 +74,9 @@ function GenerateCurpForm() {
         const segundoApellido = apellidosArray[1] || '';
         const primerApellidoLetras = primerApellido.substr(0, 2).toUpperCase();
         const segundoApellidoLetra = segundoApellido.substr(0, 1).toUpperCase();
-        const nombreLetra = nombre.substr(0, 1).toUpperCase();
+        const nombresArray = nombre.split(' ');
+        const primerNombre = nombresArray[0];
+        const nombreLetra = primerNombre.substr(0, 1).toUpperCase();
         const fechaFormato = fechaNacimiento.replace(/-/g, '').substr(2);
         const generoLetra = genero === 'M' ? 'H' : 'M';
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
@@ -84,8 +86,8 @@ function GenerateCurpForm() {
         };
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
-        const nombreConsonanteInterna = primeraConsonanteInterna(nombre);
-
+        const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
+    
         return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     };
     return (
