@@ -1,6 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from '../assets/styles/generateForm.module.css'
 
+const generateRandomCode = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let code = '';
+    for (let i = 0; i < 5; i++) {
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return code;
+  };
+  
 const estados = {
     "AGUASCALIENTES": "AS",
     "BAJA CALIFORNIA": "BC",
@@ -40,33 +49,46 @@ const estados = {
 
 function GenerateCurpForm() {
     const [formData, setFormData] = useState({
-        nombre: '',
-        apellidos: '',
-        fechaNacimiento: '',
-        genero: '',
-        estado: ''
+      nombre: '',
+      apellidos: '',
+      fechaNacimiento: '',
+      genero: '',
+      estado: ''
     });
-    const [curp, setCurp] = useState('')
-
+    const [curp, setCurp] = useState('');
+    const [accessCode, setAccessCode] = useState('');
+    const [inputCode, setInputCode] = useState('');
+    const [isValidCode, setIsValidCode] = useState(false);
+  
+    useEffect(() => {
+      const newCode = generateRandomCode();
+      setAccessCode(newCode);
+    }, []);
+  
     const handleInputChange = (e) => {
-        const { id, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [id]: value
-        }));
+      const { id, value } = e.target;
+      setFormData(prevState => ({
+        ...prevState,
+        [id]: value
+      }));
     };
-    
+  
     const handleGenderChange = (e) => {
-        setFormData(prevState => ({
-            ...prevState,
-            genero: e.target.value
-        }));
+      setFormData(prevState => ({
+        ...prevState,
+        genero: e.target.value
+      }));
     };
-    
+  
+    const handleCodeChange = (e) => {
+      setInputCode(e.target.value);
+      setIsValidCode(e.target.value === accessCode);
+    };
+  
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const curpData = generateCurp(formData);
-        setCurp(curpData);
+      e.preventDefault();
+      const curpData = generateCurp(formData);
+      setCurp(curpData);
     };
 
     const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
@@ -167,10 +189,18 @@ function GenerateCurpForm() {
                             <option value="ZACATECAS">ZACATECAS</option>
                         </select>
                     </div>
+                    <div className="mb-3">
+                        <label htmlFor="accessCode" className="form-label">Código de Acceso</label>
+                        <input type="text" className="form-control" id="accessCode" value={accessCode} readOnly />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="inputCode" className="form-label">Ingrese el Código de Acceso</label>
+                        <input type="text" className="form-control" id="inputCode" value={inputCode} onChange={handleCodeChange} />
+                    </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
                     <div className={styles.spacer}>
-                        {curp && <p>CURP Generada: </p>}
-                        <p className={styles.curpc}>{curp}</p>
+                        {curp && <p>CURP Generada: {curp}</p>}
+                        {isValidCode ? <p>Código de acceso válido</p> : <p>Código de acceso inválido</p>}
                     </div>
                 </form>
             </div>
