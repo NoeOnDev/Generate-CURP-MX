@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import jsPDF from 'jspdf'
 import styles from '../assets/styles/generateForm.module.css'
 
 const generateRandomCode = () => {
@@ -63,6 +66,7 @@ function GenerateCurpForm() {
     const [isValidCode, setIsValidCode] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [diasDelMes, setDiasDelMes] = useState(31);
+    const [showDownloadLink, setShowDownloadLink] = useState(false);
 
     const actualizarDiasDelMes = () => {
         const mes = parseInt(formData.mes, 10);
@@ -131,7 +135,7 @@ function GenerateCurpForm() {
         setInputCode(e.target.value);
         setIsValidCode(e.target.value === accessCode);
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (isValidCode) {
@@ -142,6 +146,15 @@ function GenerateCurpForm() {
             setIsValidCode(false);
             setShowMessage(false);
             setInputCode('');
+
+            // Generar el PDF
+            const pdf = new jsPDF();
+            pdf.text(curpData, 10, 10); // Agregar la CURP al PDF (ajusta las coordenadas según sea necesario)
+
+            // Descargar el PDF
+            const pdfName = 'curp.pdf';
+            pdf.save(pdfName);
+            setShowDownloadLink(true); // Mostrar el enlace de descarga
         } else {
             setShowMessage(true);
         }
@@ -300,8 +313,15 @@ function GenerateCurpForm() {
 
                     </div>
                     <div className={styles.spacer}>
-                        {curp && <p>CURP Generada:</p>}
-                        <p className={styles.curp}>{curp}</p>
+                        {curp && (
+                            <>
+                                <p>CURP Generada:</p>
+                                <p className={styles.curp}>{curp}</p>
+                                {showDownloadLink && (
+                                    <a href="#" onClick={handleSubmit}>Descargar CURP en PDF</a>
+                                )}
+                            </>
+                        )}
                     </div>
                 </form>
             </div>
