@@ -121,11 +121,21 @@ function GenerateCurpForm() {
     
         let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     
-        let homoclave = Math.floor(Math.random() * 90) + 10;
+        let homoclave;
+        if (parseInt(anio) >= 2000) {
+            // Generar una letra aleatoria y un número aleatorio
+            const letraAleatoria = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            const numeroAleatorio = Math.floor(Math.random() * 10);
+            homoclave = letraAleatoria + numeroAleatorio.toString();
+        } else {
+            homoclave = Math.floor(Math.random() * 90) + 10;
+        }
+    
         curp += homoclave.toString();
     
         return curp;
     };
+    
     
 
     return (
