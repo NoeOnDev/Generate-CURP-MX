@@ -5,11 +5,11 @@ const generateRandomCode = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let code = '';
     for (let i = 0; i < 5; i++) {
-      code += characters.charAt(Math.floor(Math.random() * characters.length));
+        code += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return code;
-  };
-  
+};
+
 const estados = {
     "AGUASCALIENTES": "AS",
     "BAJA CALIFORNIA": "BC",
@@ -49,43 +49,43 @@ const estados = {
 
 function GenerateCurpForm() {
     const [formData, setFormData] = useState({
-      nombre: '',
-      apellidos: '',
-      fechaNacimiento: '',
-      genero: '',
-      estado: ''
+        nombre: '',
+        apellidos: '',
+        fechaNacimiento: '',
+        genero: '',
+        estado: ''
     });
     const [curp, setCurp] = useState('');
     const [accessCode, setAccessCode] = useState('');
     const [inputCode, setInputCode] = useState('');
     const [isValidCode, setIsValidCode] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
-  
+
     useEffect(() => {
-      const newCode = generateRandomCode();
-      setAccessCode(newCode);
+        const newCode = generateRandomCode();
+        setAccessCode(newCode);
     }, []);
-  
+
     const handleInputChange = (e) => {
-      const { id, value } = e.target;
-      setFormData(prevState => ({
-        ...prevState,
-        [id]: value
-      }));
+        const { id, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [id]: value
+        }));
     };
-  
+
     const handleGenderChange = (e) => {
-      setFormData(prevState => ({
-        ...prevState,
-        genero: e.target.value
-      }));
+        setFormData(prevState => ({
+            ...prevState,
+            genero: e.target.value
+        }));
     };
-  
+
     const handleCodeChange = (e) => {
-      setInputCode(e.target.value);
-      setIsValidCode(e.target.value === accessCode);
+        setInputCode(e.target.value);
+        setIsValidCode(e.target.value === accessCode);
     };
-  
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isValidCode) {
@@ -115,17 +115,17 @@ function GenerateCurpForm() {
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
-    
+
         return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
     };
-    
+
     return (
         <div className={styles.container}>
             <nav className="navbar navbar-light bg-light">
                 <div className="container-fluid">
                     <a className="navbar-brand">
-                    <img src="/spellbook.png" alt="" width="30" height="24" className="d-inline-block align-text-top" />
-                    NoeOnCURP
+                        <img src="/spellbook.png" alt="" width="30" height="24" className="d-inline-block align-text-top" />
+                        NoeOnCURP
                     </a>
                 </div>
             </nav>
