@@ -93,12 +93,13 @@ function useFormState(initialState) {
     };
 
     const generateCurp = ({ nombre, apellidos, dia, mes, anio, genero, estado }) => {
-        const apellidosArray = apellidos.toUpperCase().split(' ');
+        const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        const apellidosArray = normalize(apellidos).split(' ');
         const primerApellido = apellidosArray[0] || 'X';
         const segundoApellido = apellidosArray[1] || 'X';
         const primerApellidoLetras = primerApellido.substr(0, 2);
         const segundoApellidoLetra = segundoApellido.substr(0, 1);
-        const nombresArray = nombre.toUpperCase().split(' ');
+        const nombresArray = normalize(nombre).split(' ');
         const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
         const nombreLetra = primerNombre.substr(0, 1);
         const fechaFormato = `${anio.substr(-2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
@@ -111,9 +112,9 @@ function useFormState(initialState) {
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
-
+    
         let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
-
+    
         if (curp === "ROMN031127HVZDTX") {
             curp += "A6";
         } else {
@@ -127,7 +128,7 @@ function useFormState(initialState) {
             }
             curp += homoclave;
         }
-
+    
         return curp;
     };
 
@@ -161,7 +162,7 @@ function useFormState(initialState) {
     
         const qrCodeDataURL = await QRCode.toDataURL(qrData);
     
-        pdf.addImage(qrCodeDataURL, 'PNG', 175, 50, 20, 20);
+        pdf.addImage(qrCodeDataURL, 'PNG', 175, 50, 23, 23);
     
         const imgAbajo = '/abajo.png';
         pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
