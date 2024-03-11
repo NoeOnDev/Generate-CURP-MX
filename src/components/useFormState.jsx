@@ -164,8 +164,8 @@ function useFormState(initialState) {
 
         const currentDate = format(new Date(), "dd' de 'MMMM' de 'yyyy'");
 
-        pdf.setFontSize(8);
-        pdf.text(`Ciudad de México, a ${currentDate}`, 130, 155);
+        pdf.setFontSize(7);
+        pdf.text(`Ciudad de México, a ${currentDate}`, 152, 154);
 
         pdf.setFontSize(8);
         pdf.setFont("helvetica", "bold");
