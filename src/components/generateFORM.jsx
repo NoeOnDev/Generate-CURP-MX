@@ -123,7 +123,6 @@ function GenerateCurpForm() {
     
         let homoclave;
         if (parseInt(anio) >= 2000) {
-            // Generar una letra aleatoria y un número aleatorio
             const letraAleatoria = String.fromCharCode(65 + Math.floor(Math.random() * 26));
             const numeroAleatorio = Math.floor(Math.random() * 10);
             homoclave = letraAleatoria + numeroAleatorio.toString();
