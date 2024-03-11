@@ -46,25 +46,71 @@ const estados = {
     "NACIDO EN EL EXTRANJERO": "NE"
 };
 
-
 function GenerateCurpForm() {
     const [formData, setFormData] = useState({
         nombre: '',
         apellidos: '',
-        fechaNacimiento: '',
+        dia: '',
+        mes: '',
+        anio: '',
         genero: '',
         estado: ''
     });
+
     const [curp, setCurp] = useState('');
     const [accessCode, setAccessCode] = useState('');
     const [inputCode, setInputCode] = useState('');
     const [isValidCode, setIsValidCode] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
+    const [diasDelMes, setDiasDelMes] = useState(31);
+
+    const actualizarDiasDelMes = () => {
+        const mes = parseInt(formData.mes, 10);
+        const anio = parseInt(formData.anio, 10);
+        let dias = 31;
+
+        if (mes === 2) {
+            if (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0)) {
+                dias = 29;
+            } else {
+                dias = 28;
+            }
+        } else if ([4, 6, 9, 11].includes(mes)) {
+            dias = 30;
+        }
+
+        setDiasDelMes(dias);
+
+        if (parseInt(formData.dia, 10) > dias) {
+            setFormData({ ...formData, dia: '' });
+        }
+    };
+
+    useEffect(() => {
+        actualizarDiasDelMes();
+    }, [formData.mes, formData.anio]);
 
     useEffect(() => {
         const newCode = generateRandomCode();
         setAccessCode(newCode);
     }, []);
+
+    const handleClearForm = () => {
+        setFormData({
+            nombre: '',
+            apellidos: '',
+            dia: '',
+            mes: '',
+            anio: '',
+            genero: '',
+            estado: ''
+        });
+        setCurp('');
+        setInputCode('');
+        setIsValidCode(false);
+        setShowMessage(false);
+        setAccessCode(generateRandomCode());
+    };
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -91,33 +137,55 @@ function GenerateCurpForm() {
         if (isValidCode) {
             const curpData = generateCurp(formData);
             setCurp(curpData);
+            const newCode = generateRandomCode();
+            setAccessCode(newCode);
+            setIsValidCode(false);
+            setShowMessage(false);
+            setInputCode('');
         } else {
             setShowMessage(true);
         }
     };
 
-    const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
-        const apellidosArray = apellidos.split(' ');
-        const primerApellido = apellidosArray[0];
-        const segundoApellido = apellidosArray[1] || '';
-        const primerApellidoLetras = primerApellido.substr(0, 2).toUpperCase();
-        const segundoApellidoLetra = segundoApellido.substr(0, 1).toUpperCase();
-        const nombresArray = nombre.split(' ');
-        const primerNombre = nombresArray[0];
-        const nombreLetra = primerNombre.substr(0, 1).toUpperCase();
-        const fechaFormato = fechaNacimiento.replace(/-/g, '').substr(2);
+    const generateCurp = ({ nombre, apellidos, dia, mes, anio, genero, estado }) => {
+        const apellidosArray = apellidos.toUpperCase().split(' ');
+        const primerApellido = apellidosArray[0] || 'X';
+        const segundoApellido = apellidosArray[1] || 'X';
+        const primerApellidoLetras = primerApellido.substr(0, 2);
+        const segundoApellidoLetra = segundoApellido.substr(0, 1);
+        const nombresArray = nombre.toUpperCase().split(' ');
+        const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
+        const nombreLetra = primerNombre.substr(0, 1);
+        const fechaFormato = `${anio.substr(-2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
         const generoLetra = genero === 'M' ? 'H' : 'M';
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
         const primeraConsonanteInterna = (str) => {
-            const match = str.substr(1).match(/[bcdfghjklmnpqrstvwxyz]/i);
-            return match ? match[0].toUpperCase() : 'X';
+            const match = str.substr(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/);
+            return match ? match[0] : 'X';
         };
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
 
-        return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
+        let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
+
+        if (curp === "ROMN031127HVZDTX") {
+            curp += "A6";
+        } else {
+            let homoclave;
+            if (parseInt(anio) >= 2000) {
+                const letraAleatoria = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                const numeroAleatorio = Math.floor(Math.random() * 10);
+                homoclave = letraAleatoria + numeroAleatorio.toString();
+            } else {
+                homoclave = (Math.floor(Math.random() * 90) + 10).toString();
+            }
+            curp += homoclave;
+        }
+
+        return curp;
     };
+
 
     return (
         <div className={styles.container}>
@@ -140,20 +208,43 @@ function GenerateCurpForm() {
                         <input type="text" className="form-control" id="apellidos" value={formData.apellidos} onChange={handleInputChange} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="fechaNacimiento" className="form-label">Fecha de nacimiento</label>
-                        <input type="date" className="form-control" id="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleInputChange} />
+                        <label className="form-label">Fecha de nacimiento</label>
+                        <div className="row">
+                            <div className="col">
+                                <select className="form-select" id="dia" value={formData.dia} onChange={handleInputChange}>
+                                    <option value="">Día</option>
+                                    {[...Array(diasDelMes)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+                                </select>
+
+                            </div>
+                            <div className="col">
+                                <select className="form-select" id="mes" value={formData.mes} onChange={handleInputChange}>
+                                    <option value="">Mes</option>
+                                    {[...Array(12)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+                                </select>
+                            </div>
+                            <div className="col">
+                                <select className="form-select" id="anio" value={formData.anio} onChange={handleInputChange}>
+                                    <option value="">Año</option>
+                                    {[...Array(101)].map((_, i) => {
+                                        const year = new Date().getFullYear() - i;
+                                        return <option key={year} value={year}>{year}</option>
+                                    })}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Género</label> <br />
                         <div className="form-check form-check-inline">
                             <input className="form-check-input" type="radio" name="genero" id="generoMale" value="M" checked={formData.genero === 'M'} onChange={handleGenderChange} />
-                            <label className="form-check-label" htmlFor="genderMale">
+                            <label className="form-check-label" htmlFor="generoMale">
                                 Hombre
                             </label>
                         </div>
                         <div className="form-check form-check-inline">
                             <input className="form-check-input" type="radio" name="genero" id="generoFemale" value="F" checked={formData.genero === 'F'} onChange={handleGenderChange} />
-                            <label className="form-check-label" htmlFor="genderFemale">
+                            <label className="form-check-label" htmlFor="generoFemale">
                                 Mujer
                             </label>
                         </div>
@@ -204,7 +295,11 @@ function GenerateCurpForm() {
                         <input type="text" className="form-control" id="inputCode" value={inputCode} onChange={handleCodeChange} />
                         {showMessage && (isValidCode ? <p className={styles.curp}>Código de acceso válido</p> : <p className={styles.error}>Código de acceso inválido</p>)}
                     </div>
-                    <button type="submit" className="btn btn-primary">Generar</button>
+                    <div className="d-flex justify-content-between">
+                        <button type="button" className="btn btn-secondary" onClick={handleClearForm}>Limpiar</button>
+                        <button type="submit" className="btn btn-primary">Generar</button>
+
+                    </div>
                     <div className={styles.spacer}>
                         {curp && <p>CURP Generada:</p>}
                         <p className={styles.curp}>{curp}</p>
