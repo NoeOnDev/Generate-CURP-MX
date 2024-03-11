@@ -6,44 +6,6 @@ import AccessCodeInput from './accessCodeInput';
 import CurpGenerator from './curpGenerator';
 import styles from '../assets/styles/generateForm.module.css'
 
-
-
-const estados = {
-    "AGUASCALIENTES": "AS",
-    "BAJA CALIFORNIA": "BC",
-    "BAJA CALIFORNIA SUR": "BS",
-    "CAMPECHE": "CC",
-    "CHIAPAS": "CS",
-    "CHIHUAHUA": "CH",
-    "CIUDAD DE MEXICO": "DF",
-    "COAHUILA": "CL",
-    "COLIMA": "CM",
-    "DURANGO": "DG",
-    "ESTADO DE MEXICO": "MC",
-    "GUANAJUATO": "GT",
-    "GUERRERO": "GR",
-    "HIDALGO": "HG",
-    "JALISCO": "JC",
-    "MICHOACAN": "MN",
-    "MORELOS": "MS",
-    "NAYARIT": "NT",
-    "NUEVO LEON": "NL",
-    "OAXACA": "OC",
-    "PUEBLA": "PL",
-    "QUERETARO": "QT",
-    "QUINTANA ROO": "QR",
-    "SAN LUIS POTOSI": "SP",
-    "SINALOA": "SL",
-    "SONORA": "SR",
-    "TABASCO": "TC",
-    "TAMAULIPAS": "TS",
-    "TLAXCALA": "TL",
-    "VERACRUZ": "VZ",
-    "YUCATAN": "YN",
-    "ZACATECAS": "ZS",
-    "NACIDO EN EL EXTRANJERO": "NE"
-};
-
 function GenerateCurpForm() {
     const [curp, setCurp] = useState('');
     const [accessCode, setAccessCode] = useState('');
@@ -158,21 +120,40 @@ function GenerateCurpForm() {
         setShowDownloadLink(true);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (isValidCode) {
-            const curpData = generateCurp(formData);
-            setCurp(curpData);
-            const newCode = generateRandomCode();
-            setAccessCode(newCode);
-            setIsValidCode(false);
-            setShowMessage(false);
-            setInputCode('');
-
-            generatePDF(curpData);
-        } else {
-            setShowMessage(true);
-        }
+    const estados = {
+        "AGUASCALIENTES": "AS",
+        "BAJA CALIFORNIA": "BC",
+        "BAJA CALIFORNIA SUR": "BS",
+        "CAMPECHE": "CC",
+        "CHIAPAS": "CS",
+        "CHIHUAHUA": "CH",
+        "CIUDAD DE MEXICO": "DF",
+        "COAHUILA": "CL",
+        "COLIMA": "CM",
+        "DURANGO": "DG",
+        "ESTADO DE MEXICO": "MC",
+        "GUANAJUATO": "GT",
+        "GUERRERO": "GR",
+        "HIDALGO": "HG",
+        "JALISCO": "JC",
+        "MICHOACAN": "MN",
+        "MORELOS": "MS",
+        "NAYARIT": "NT",
+        "NUEVO LEON": "NL",
+        "OAXACA": "OC",
+        "PUEBLA": "PL",
+        "QUERETARO": "QT",
+        "QUINTANA ROO": "QR",
+        "SAN LUIS POTOSI": "SP",
+        "SINALOA": "SL",
+        "SONORA": "SR",
+        "TABASCO": "TC",
+        "TAMAULIPAS": "TS",
+        "TLAXCALA": "TL",
+        "VERACRUZ": "VZ",
+        "YUCATAN": "YN",
+        "ZACATECAS": "ZS",
+        "NACIDO EN EL EXTRANJERO": "NE"
     };
 
     const generateCurp = ({ nombre, apellidos, dia, mes, anio, genero, estado }) => {
@@ -212,6 +193,23 @@ function GenerateCurpForm() {
         }
 
         return curp;
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (isValidCode) {
+            const curpData = generateCurp(formData);
+            setCurp(curpData);
+            const newCode = generateRandomCode();
+            setAccessCode(newCode);
+            setIsValidCode(false);
+            setShowMessage(false);
+            setInputCode('');
+
+            generatePDF(curpData);
+        } else {
+            setShowMessage(true);
+        }
     };
 
     return (
