@@ -131,8 +131,8 @@ function GenerateCurpForm() {
         setInputCode(e.target.value);
         setIsValidCode(e.target.value === accessCode);
     };
-
-    const handleSubmit = (e) => {
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (isValidCode) {
             const curpData = generateCurp(formData);
@@ -185,7 +185,6 @@ function GenerateCurpForm() {
 
         return curp;
     };
-
 
     return (
         <div className={styles.container}>
