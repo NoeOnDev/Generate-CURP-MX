@@ -1,5 +1,5 @@
 import React from 'react';
-import jsPDF from 'jspdf';
+
 import useFormState from './useFormState';
 import PersonalInfoForm from './personalInfoForm';
 import StateSelection from './stateSelection';
@@ -21,7 +21,6 @@ function GenerateCurpForm() {
         handleGenderChange,
         handleCodeChange,
         handleSubmit,
-        generatePDF
     } = useFormState({
         nombre: '',
         apellidos: '',
