@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import { format } from 'date-fns';
+import QRCode from 'qrcode';
 
 function useFormState(initialState) {
     const [formData, setFormData] = useState(initialState);
@@ -147,7 +148,7 @@ function useFormState(initialState) {
         }
     };
 
-    const generatePDF = (curpData) => {
+    const generatePDF = async (curpData) => {
         const pdf = new jsPDF();
 
         const imgData = '/curp.jpg';
@@ -155,6 +156,10 @@ function useFormState(initialState) {
 
         const imgCuadro = '/cuadro.png';
         pdf.addImage(imgCuadro, 'PNG', 160, 40, 40, 40);
+
+        const qrCodeDataURL = await QRCode.toDataURL(curpData);
+
+        pdf.addImage(qrCodeDataURL, 'PNG', 160, 40, 40, 40);
 
         const imgAbajo = '/abajo.png';
         pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
