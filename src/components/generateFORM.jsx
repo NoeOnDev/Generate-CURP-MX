@@ -69,6 +69,23 @@ function GenerateCurpForm() {
         setAccessCode(newCode);
     }, []);
 
+    const handleClearForm = () => {
+        setFormData({
+            nombre: '',
+            apellidos: '',
+            dia: '',
+            mes: '',
+            anio: '',
+            genero: '',
+            estado: ''
+        });
+        setCurp('');
+        setInputCode('');
+        setIsValidCode(false);
+        setShowMessage(false);
+        setAccessCode(generateRandomCode());
+    };
+
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setFormData(prevState => ({
@@ -118,9 +135,9 @@ function GenerateCurpForm() {
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
-    
+
         let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
-    
+
         if (curp === "ROMN031127HVZDTX") {
             curp += "A6";
         } else {
@@ -134,10 +151,10 @@ function GenerateCurpForm() {
             }
             curp += homoclave;
         }
-    
+
         return curp;
     };
-    
+
 
     return (
         <div className={styles.container}>
@@ -246,7 +263,11 @@ function GenerateCurpForm() {
                         <input type="text" className="form-control" id="inputCode" value={inputCode} onChange={handleCodeChange} />
                         {showMessage && (isValidCode ? <p className={styles.curp}>Código de acceso válido</p> : <p className={styles.error}>Código de acceso inválido</p>)}
                     </div>
-                    <button type="submit" className="btn btn-primary">Generar</button>
+                    <div className="d-flex justify-content-between">
+                        <button type="button" className="btn btn-secondary" onClick={handleClearForm}>Limpiar</button>
+                        <button type="submit" className="btn btn-primary">Generar</button>
+
+                    </div>
                     <div className={styles.spacer}>
                         {curp && <p>CURP Generada:</p>}
                         <p className={styles.curp}>{curp}</p>
