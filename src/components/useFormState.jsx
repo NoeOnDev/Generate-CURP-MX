@@ -153,7 +153,7 @@ function useFormState(initialState) {
         pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
 
         const imgCuadro = '/cuadro.png';
-        pdf.addImage(imgCuadro, 'PNG', 144.5, 35);
+        pdf.addImage(imgCuadro, 'PNG', 160, 40, 40, 40);
 
         const imgAbajo = '/abajo.png';
         pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
