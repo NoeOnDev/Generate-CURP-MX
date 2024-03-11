@@ -51,10 +51,13 @@ function GenerateCurpForm() {
     const [formData, setFormData] = useState({
         nombre: '',
         apellidos: '',
-        fechaNacimiento: '',
+        dia: '',
+        mes: '',
+        ano: '',
         genero: '',
         estado: ''
     });
+
     const [curp, setCurp] = useState('');
     const [accessCode, setAccessCode] = useState('');
     const [inputCode, setInputCode] = useState('');
@@ -96,7 +99,7 @@ function GenerateCurpForm() {
         }
     };
 
-    const generateCurp = ({ nombre, apellidos, fechaNacimiento, genero, estado }) => {
+    const generateCurp = ({ nombre, apellidos, dia, mes, ano, genero, estado }) => {
         const apellidosArray = apellidos.split(' ');
         const primerApellido = apellidosArray[0];
         const segundoApellido = apellidosArray[1] || '';
@@ -105,7 +108,7 @@ function GenerateCurpForm() {
         const nombresArray = nombre.split(' ');
         const primerNombre = nombresArray[0];
         const nombreLetra = primerNombre.substr(0, 1).toUpperCase();
-        const fechaFormato = fechaNacimiento.replace(/-/g, '').substr(2);
+        const fechaFormato = `${ano.substr(2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
         const generoLetra = genero === 'M' ? 'H' : 'M';
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
         const primeraConsonanteInterna = (str) => {
@@ -140,8 +143,24 @@ function GenerateCurpForm() {
                         <input type="text" className="form-control" id="apellidos" value={formData.apellidos} onChange={handleInputChange} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="fechaNacimiento" className="form-label">Fecha de nacimiento</label>
-                        <input type="date" className="form-control" id="fechaNacimiento" value={formData.fechaNacimiento} onChange={handleInputChange} />
+                        <label className="form-label">Fecha de nacimiento</label>
+                        <div>
+                            <select className="form-select" id="dia" value={formData.dia} onChange={handleInputChange}>
+                                <option value="">Día</option>
+                                {[...Array(31)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+                            </select>
+                            <select className="form-select" id="mes" value={formData.mes} onChange={handleInputChange}>
+                                <option value="">Mes</option>
+                                {[...Array(12)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+                            </select>
+                            <select className="form-select" id="ano" value={formData.ano} onChange={handleInputChange}>
+                                <option value="">Año</option>
+                                {[...Array(101)].map((_, i) => {
+                                    const year = new Date().getFullYear() - i;
+                                    return <option key={year} value={year}>{year}</option>
+                                })}
+                            </select>
+                        </div>
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Género</label> <br />
