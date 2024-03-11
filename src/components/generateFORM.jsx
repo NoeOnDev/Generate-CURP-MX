@@ -63,6 +63,33 @@ function GenerateCurpForm() {
     const [inputCode, setInputCode] = useState('');
     const [isValidCode, setIsValidCode] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
+    const [diasDelMes, setDiasDelMes] = useState(31);
+
+    const actualizarDiasDelMes = () => {
+        const mes = parseInt(formData.mes, 10);
+        const anio = parseInt(formData.anio, 10);
+        let dias = 31;
+
+        if (mes === 2) {
+            if (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0)) {
+                dias = 29;
+            } else {
+                dias = 28;
+            }
+        } else if ([4, 6, 9, 11].includes(mes)) {
+            dias = 30;
+        }
+
+        setDiasDelMes(dias);
+
+        if (parseInt(formData.dia, 10) > dias) {
+            setFormData({ ...formData, dia: '' });
+        }
+    };
+
+    useEffect(() => {
+        actualizarDiasDelMes();
+    }, [formData.mes, formData.anio]);
 
     useEffect(() => {
         const newCode = generateRandomCode();
@@ -187,8 +214,9 @@ function GenerateCurpForm() {
                             <div className="col">
                                 <select className="form-select" id="dia" value={formData.dia} onChange={handleInputChange}>
                                     <option value="">Día</option>
-                                    {[...Array(31)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
+                                    {[...Array(diasDelMes)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                                 </select>
+
                             </div>
                             <div className="col">
                                 <select className="form-select" id="mes" value={formData.mes} onChange={handleInputChange}>
