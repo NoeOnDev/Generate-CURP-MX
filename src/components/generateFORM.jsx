@@ -144,16 +144,16 @@ function GenerateCurpForm() {
                     </div>
                     <div className="mb-3">
                         <label className="form-label">Fecha de nacimiento</label>
-                        <div>
-                            <select className="form-select" id="dia" value={formData.dia} onChange={handleInputChange}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <select className="form-select" id="dia" value={formData.dia} onChange={handleInputChange} style={{ width: '30%' }}>
                                 <option value="">Día</option>
                                 {[...Array(31)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                             </select>
-                            <select className="form-select" id="mes" value={formData.mes} onChange={handleInputChange}>
+                            <select className="form-select" id="mes" value={formData.mes} onChange={handleInputChange} style={{ width: '30%' }}>
                                 <option value="">Mes</option>
                                 {[...Array(12)].map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                             </select>
-                            <select className="form-select" id="ano" value={formData.ano} onChange={handleInputChange}>
+                            <select className="form-select" id="ano" value={formData.ano} onChange={handleInputChange} style={{ width: '30%' }}>
                                 <option value="">Año</option>
                                 {[...Array(101)].map((_, i) => {
                                     const year = new Date().getFullYear() - i;
