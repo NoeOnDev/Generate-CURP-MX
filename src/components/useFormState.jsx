@@ -28,13 +28,24 @@ export function useFormState(initialState) {
         }));
     };
 
-    const handleGenderChange = (e) => {
-        setFormData(prevState => ({
-            ...prevState,
-            genero: e.target.value
-        }));
+    const generateRandomCode = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let code = '';
+        for (let i = 0; i < 5; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
     };
 
+    useEffect(() => {
+        const newCode = generateRandomCode();
+        setAccessCode(newCode);
+    }, []);
+
+    const handleCodeChange = (e) => {
+        setInputCode(e.target.value);
+        setIsValidCode(e.target.value === accessCode);
+    };
 
     return {
         formData,
@@ -52,6 +63,7 @@ export function useFormState(initialState) {
         setShowMessage,
         setShowDownloadLink,
         handleClearForm,
-        handleInputChange
+        handleInputChange,
+        handleCodeChange
     };
 }
