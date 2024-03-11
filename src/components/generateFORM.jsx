@@ -6,14 +6,7 @@ import AccessCodeInput from './accessCodeInput';
 import CurpGenerator from './curpGenerator';
 import styles from '../assets/styles/generateForm.module.css'
 
-const generateRandomCode = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let code = '';
-    for (let i = 0; i < 5; i++) {
-        code += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return code;
-};
+
 
 const estados = {
     "AGUASCALIENTES": "AS",
@@ -52,6 +45,12 @@ const estados = {
 };
 
 function GenerateCurpForm() {
+    const [curp, setCurp] = useState('');
+    const [accessCode, setAccessCode] = useState('');
+    const [inputCode, setInputCode] = useState('');
+    const [isValidCode, setIsValidCode] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
+    const [showDownloadLink, setShowDownloadLink] = useState(false);
     const [formData, setFormData] = useState({
         nombre: '',
         apellidos: '',
@@ -61,18 +60,6 @@ function GenerateCurpForm() {
         genero: '',
         estado: ''
     });
-
-    const [curp, setCurp] = useState('');
-    const [accessCode, setAccessCode] = useState('');
-    const [inputCode, setInputCode] = useState('');
-    const [isValidCode, setIsValidCode] = useState(false);
-    const [showMessage, setShowMessage] = useState(false);
-    const [showDownloadLink, setShowDownloadLink] = useState(false);
-
-    useEffect(() => {
-        const newCode = generateRandomCode();
-        setAccessCode(newCode);
-    }, []);
 
     const handleClearForm = () => {
         setFormData({
@@ -107,9 +94,68 @@ function GenerateCurpForm() {
         }));
     };
 
+    const generateRandomCode = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let code = '';
+        for (let i = 0; i < 5; i++) {
+            code += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return code;
+    };
+
+    useEffect(() => {
+        const newCode = generateRandomCode();
+        setAccessCode(newCode);
+    }, []);
+
     const handleCodeChange = (e) => {
         setInputCode(e.target.value);
         setIsValidCode(e.target.value === accessCode);
+    };
+
+    const generatePDF = () => {
+        const pdf = new jsPDF();
+
+        const imgData = '/curp.jpg';
+        pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
+
+        const imgCuadro = '/cuadro.png';
+        pdf.addImage(imgCuadro, 'PNG', 144.5, 35);
+
+        const imgAbajo = '/abajo.png';
+        pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
+
+        pdf.setFontSize(8);
+        pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
+
+        pdf.setFontSize(8);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(`${formData.nombre} ${formData.apellidos}`, 7, 125);
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text('Clave: ', 64, 52);
+
+        pdf.setFontSize(16);
+        pdf.text(`${curpData}`, 64, 59);
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text('Nombre: ', 64, 68);
+
+        pdf.setFontSize(16);
+        pdf.text(`${formData.nombre} ${formData.apellidos}`, 64, 75);
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text('Entidad de registro: ', 64, 85);
+
+        pdf.setFontSize(11);
+        pdf.text(`${formData.estado}`, 101, 85);
+
+        const pdfName = 'curp.pdf';
+        pdf.save(pdfName);
+        setShowDownloadLink(true);
     };
 
     const handleSubmit = async (e) => {
@@ -123,48 +169,7 @@ function GenerateCurpForm() {
             setShowMessage(false);
             setInputCode('');
 
-            const pdf = new jsPDF();
-
-            const imgData = '/curp.jpg';
-            pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
-
-            const imgCuadro = '/cuadro.png';
-            pdf.addImage(imgCuadro, 'PNG', 144.5, 35);
-
-            const imgAbajo = '/abajo.png';
-            pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
-
-            pdf.setFontSize(8);
-            pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
-
-            pdf.setFontSize(8);
-            pdf.setFont("helvetica", "bold");
-            pdf.text(`${formData.nombre} ${formData.apellidos}`, 7, 125);
-
-            pdf.setFontSize(10);
-            pdf.setFont("helvetica", "bold");
-            pdf.text('Clave: ', 64, 52);
-
-            pdf.setFontSize(16);
-            pdf.text(`${curpData}`, 64, 59);
-
-            pdf.setFontSize(10);
-            pdf.setFont("helvetica", "bold");
-            pdf.text('Nombre: ', 64, 68);
-
-            pdf.setFontSize(16);
-            pdf.text(`${formData.nombre} ${formData.apellidos}`, 64, 75);
-
-            pdf.setFontSize(10);
-            pdf.setFont("helvetica", "bold");
-            pdf.text('Entidad de registro: ', 64, 85);
-
-            pdf.setFontSize(11);
-            pdf.text(`${formData.estado}`, 101, 85);
-
-            const pdfName = 'curp.pdf';
-            pdf.save(pdfName);
-            setShowDownloadLink(true);
+            generatePDF(curpData);
         } else {
             setShowMessage(true);
         }
