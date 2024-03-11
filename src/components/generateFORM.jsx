@@ -111,6 +111,11 @@ function GenerateCurpForm() {
         if (isValidCode) {
             const curpData = generateCurp(formData);
             setCurp(curpData);
+            const newCode = generateRandomCode();
+            setAccessCode(newCode);
+            setIsValidCode(false);
+            setShowMessage(false);
+            setInputCode('');
         } else {
             setShowMessage(true);
         }
