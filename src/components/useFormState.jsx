@@ -150,53 +150,55 @@ function useFormState(initialState) {
 
     const generatePDF = async (curpData) => {
         const pdf = new jsPDF();
-
+    
         const imgData = '/curp.jpg';
         pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
-
+    
         const imgCuadro = '/cuadro.png';
         pdf.addImage(imgCuadro, 'PNG', 160, 40, 40, 40);
-
-        const qrCodeDataURL = await QRCode.toDataURL(curpData);
-
-        pdf.addImage(qrCodeDataURL, 'PNG', 160, 40, 40, 40);
-
+    
+        const qrData = `${curpData}||${formData.apellidos.split(' ')[0]}|${formData.apellidos.split(' ')[1] || ''}|${formData.nombre}|${formData.genero}|${formData.dia}/${formData.mes}/${formData.anio}|${formData.estado}|00`;
+    
+        const qrCodeDataURL = await QRCode.toDataURL(qrData);
+    
+        pdf.addImage(qrCodeDataURL, 'PNG', 160, 40, 30, 30);
+    
         const imgAbajo = '/abajo.png';
         pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
-
+    
         pdf.setFontSize(8);
         pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
-
+    
         const currentDate = format(new Date(), "dd' de 'MMMM' de 'yyyy'");
-
+    
         pdf.setFontSize(7);
         pdf.text(`Ciudad de México, a ${currentDate}`, 152, 154);
-
+    
         pdf.setFontSize(8);
         pdf.setFont("helvetica", "bold");
         pdf.text(`${formData.nombre} ${formData.apellidos}`, 7, 125);
-
+    
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "bold");
         pdf.text('Clave: ', 64, 52);
-
+    
         pdf.setFontSize(16);
         pdf.text(`${curpData}`, 64, 59);
-
+    
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "bold");
         pdf.text('Nombre: ', 64, 68);
-
+    
         pdf.setFontSize(16);
         pdf.text(`${formData.nombre} ${formData.apellidos}`, 64, 75);
-
+    
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "bold");
         pdf.text('Entidad de registro: ', 64, 85);
-
+    
         pdf.setFontSize(11);
         pdf.text(`${formData.estado}`, 101, 85);
-
+    
         const pdfName = 'curp.pdf';
         pdf.save(pdfName);
         setShowDownloadLink(true);
