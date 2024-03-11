@@ -99,28 +99,34 @@ function GenerateCurpForm() {
         }
     };
 
-    const generateCurp = ({ nombre, apellidos, dia, mes, ano, genero, estado }) => {
-        const apellidosArray = apellidos.split(' ');
-        const primerApellido = apellidosArray[0];
-        const segundoApellido = apellidosArray[1] || '';
-        const primerApellidoLetras = primerApellido.substr(0, 2).toUpperCase();
-        const segundoApellidoLetra = segundoApellido.substr(0, 1).toUpperCase();
-        const nombresArray = nombre.split(' ');
-        const primerNombre = nombresArray[0];
-        const nombreLetra = primerNombre.substr(0, 1).toUpperCase();
-        const fechaFormato = `${ano.substr(2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
+    const generateCurp = ({ nombre, apellidos, dia, mes, anio, genero, estado }) => {
+        const apellidosArray = apellidos.toUpperCase().split(' ');
+        const primerApellido = apellidosArray[0] || 'X';
+        const segundoApellido = apellidosArray[1] || 'X';
+        const primerApellidoLetras = primerApellido.substr(0, 2);
+        const segundoApellidoLetra = segundoApellido.substr(0, 1);
+        const nombresArray = nombre.toUpperCase().split(' ');
+        const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
+        const nombreLetra = primerNombre.substr(0, 1);
+        const fechaFormato = `${anio.substr(-2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
         const generoLetra = genero === 'M' ? 'H' : 'M';
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
         const primeraConsonanteInterna = (str) => {
-            const match = str.substr(1).match(/[bcdfghjklmnpqrstvwxyz]/i);
-            return match ? match[0].toUpperCase() : 'X';
+            const match = str.substr(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/);
+            return match ? match[0] : 'X';
         };
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
-
-        return `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
+    
+        let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
+    
+        let homoclave = Math.floor(Math.random() * 90) + 10;
+        curp += homoclave.toString();
+    
+        return curp;
     };
+    
 
     return (
         <div className={styles.container}>
