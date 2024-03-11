@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
+import { format } from 'date-fns';
 
 function useFormState(initialState) {
     const [formData, setFormData] = useState(initialState);
@@ -160,6 +161,11 @@ function useFormState(initialState) {
 
         pdf.setFontSize(8);
         pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
+
+        const currentDate = format(new Date(), "dd' de 'MMMM' de 'yyyy'");
+
+        pdf.setFontSize(8);
+        pdf.text(`Ciudad de México, a ${currentDate}`, 130, 155);
 
         pdf.setFontSize(8);
         pdf.setFont("helvetica", "bold");
