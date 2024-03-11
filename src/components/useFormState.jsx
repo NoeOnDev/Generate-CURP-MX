@@ -161,7 +161,7 @@ function useFormState(initialState) {
     
         const qrCodeDataURL = await QRCode.toDataURL(qrData);
     
-        pdf.addImage(qrCodeDataURL, 'PNG', 160, 40, 30, 30);
+        pdf.addImage(qrCodeDataURL, 'PNG', 175, 50, 20, 20);
     
         const imgAbajo = '/abajo.png';
         pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
