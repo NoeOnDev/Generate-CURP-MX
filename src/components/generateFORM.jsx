@@ -75,51 +75,6 @@ function GenerateCurpForm() {
         setIsValidCode(e.target.value === accessCode);
     };
 
-    const generatePDF = () => {
-        const pdf = new jsPDF();
-
-        const imgData = '/curp.jpg';
-        pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
-
-        const imgCuadro = '/cuadro.png';
-        pdf.addImage(imgCuadro, 'PNG', 144.5, 35);
-
-        const imgAbajo = '/abajo.png';
-        pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
-
-        pdf.setFontSize(8);
-        pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
-
-        pdf.setFontSize(8);
-        pdf.setFont("helvetica", "bold");
-        pdf.text(`${formData.nombre} ${formData.apellidos}`, 7, 125);
-
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "bold");
-        pdf.text('Clave: ', 64, 52);
-
-        pdf.setFontSize(16);
-        pdf.text(`${curpData}`, 64, 59);
-
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "bold");
-        pdf.text('Nombre: ', 64, 68);
-
-        pdf.setFontSize(16);
-        pdf.text(`${formData.nombre} ${formData.apellidos}`, 64, 75);
-
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "bold");
-        pdf.text('Entidad de registro: ', 64, 85);
-
-        pdf.setFontSize(11);
-        pdf.text(`${formData.estado}`, 101, 85);
-
-        const pdfName = 'curp.pdf';
-        pdf.save(pdfName);
-        setShowDownloadLink(true);
-    };
-
     const estados = {
         "AGUASCALIENTES": "AS",
         "BAJA CALIFORNIA": "BC",
@@ -210,6 +165,51 @@ function GenerateCurpForm() {
         } else {
             setShowMessage(true);
         }
+    };
+
+    const generatePDF = (curpData) => {
+        const pdf = new jsPDF();
+
+        const imgData = '/curp.jpg';
+        pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
+
+        const imgCuadro = '/cuadro.png';
+        pdf.addImage(imgCuadro, 'PNG', 144.5, 35);
+
+        const imgAbajo = '/abajo.png';
+        pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
+
+        pdf.setFontSize(8);
+        pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
+
+        pdf.setFontSize(8);
+        pdf.setFont("helvetica", "bold");
+        pdf.text(`${formData.nombre} ${formData.apellidos}`, 7, 125);
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text('Clave: ', 64, 52);
+
+        pdf.setFontSize(16);
+        pdf.text(`${curpData}`, 64, 59);
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text('Nombre: ', 64, 68);
+
+        pdf.setFontSize(16);
+        pdf.text(`${formData.nombre} ${formData.apellidos}`, 64, 75);
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "bold");
+        pdf.text('Entidad de registro: ', 64, 85);
+
+        pdf.setFontSize(11);
+        pdf.text(`${formData.estado}`, 101, 85);
+
+        const pdfName = 'curp.pdf';
+        pdf.save(pdfName);
+        setShowDownloadLink(true);
     };
 
     return (
