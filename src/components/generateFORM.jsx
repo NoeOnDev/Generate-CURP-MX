@@ -23,7 +23,8 @@ function GenerateCurpForm() {
         handleSubmit,
     } = useFormState({
         nombre: '',
-        apellidos: '',
+        apellidoPaterno: '',
+        apellidoMaterno: '',
         dia: '',
         mes: '',
         anio: '',

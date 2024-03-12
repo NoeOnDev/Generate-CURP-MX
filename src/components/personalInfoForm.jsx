@@ -35,9 +35,19 @@ function PersonalInfoForm({ formData, handleInputChange, handleGenderChange }) {
                 <label htmlFor="nombre" className="form-label">Nombre(s)</label>
                 <input type="text" className="form-control" id="nombre" value={formData.nombre} onChange={handleInputChange} />
             </div>
-            <div className="mb-3">
-                <label htmlFor="apellidos" className="form-label">Apellidos</label>
-                <input type="text" className="form-control" id="apellidos" value={formData.apellidos} onChange={handleInputChange} />
+            <div className="row">
+                <div className="col">
+                    <div className="mb-3">
+                        <label htmlFor="apellidoPaterno" className="form-label">Apellido Paterno</label>
+                        <input type="text" className="form-control" id="apellidoPaterno" value={formData.apellidoPaterno} onChange={handleInputChange} />
+                    </div>
+                </div>
+                <div className="col">
+                    <div className="mb-3">
+                        <label htmlFor="apellidoMaterno" className="form-label">Apellido Materno</label>
+                        <input type="text" className="form-control" id="apellidoMaterno" value={formData.apellidoMaterno} onChange={handleInputChange} />
+                    </div>
+                </div>
             </div>
             <div className="mb-3">
                 <label className="form-label">Fecha de nacimiento</label>

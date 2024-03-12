@@ -92,10 +92,9 @@ function useFormState(initialState) {
         "NACIDO EN EL EXTRANJERO": "NE"
     };
 
-    const generateCurp = ({ nombre, apellidos, dia, mes, anio, genero, estado }) => {
-        const apellidosArray = apellidos.toUpperCase().split(' ');
-        const primerApellido = apellidosArray[0] || 'X';
-        const segundoApellido = apellidosArray[1] || 'X';
+    const generateCurp = ({ nombre, apellidoPaterno, apellidoMaterno, dia, mes, anio, genero, estado }) => {
+        const primerApellido = apellidoPaterno.toUpperCase() || 'X';
+        const segundoApellido = apellidoMaterno.toUpperCase() || 'X';
         const primerApellidoLetras = primerApellido.substr(0, 2);
         const segundoApellidoLetra = segundoApellido.substr(0, 1);
         const nombresArray = nombre.toUpperCase().split(' ');
@@ -157,7 +156,7 @@ function useFormState(initialState) {
         const imgCuadro = '/cuadro.png';
         pdf.addImage(imgCuadro, 'PNG', 160, 40, 40, 40);
 
-        const qrData = `${curpData}||${formData.apellidos.split(' ')[0]}|${formData.apellidos.split(' ')[1] || ''}|${formData.nombre}|${formData.genero}|${formData.dia}/${formData.mes}/${formData.anio}|${formData.estado}|00`;
+        const qrData = `${curpData}||${formData.apellidoPaterno}|${formData.apellidoMaterno || ''}|${formData.nombre}|${formData.genero}|${formData.dia}/${formData.mes}/${formData.anio}|${formData.estado}|00`;
 
         const qrCodeDataURL = await QRCode.toDataURL(qrData);
 
@@ -176,7 +175,7 @@ function useFormState(initialState) {
 
         pdf.setFontSize(8);
         pdf.setFont("helvetica", "bold");
-        pdf.text(`${formData.nombre} ${formData.apellidos}`, 7, 125);
+        pdf.text(`${formData.nombre} ${formData.apellidoPaterno} ${formData.apellidoMaterno}`, 7, 125);
 
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "bold");
@@ -190,7 +189,7 @@ function useFormState(initialState) {
         pdf.text('Nombre: ', 64, 68);
 
         pdf.setFontSize(16);
-        pdf.text(`${formData.nombre} ${formData.apellidos}`, 64, 75);
+        pdf.text(`${formData.nombre} ${formData.apellidoPaterno} ${formData.apellidoMaterno}`, 64, 75);
 
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "bold");
