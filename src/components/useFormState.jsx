@@ -213,7 +213,7 @@ function useFormState(initialState) {
         pdf.setFontSize(11);
         pdf.text(`${usuario.estado}`, 101, 85);
 
-        const pdfName = 'curp.pdf';
+        const pdfName = `${usuario.nombre}_${usuario.apellidoPaterno}_${usuario.apellidoMaterno}_${generateRandomCode()}.pdf`;
         pdf.save(pdfName);
         setShowDownloadLink(true);
     };
