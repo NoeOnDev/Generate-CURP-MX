@@ -69,13 +69,13 @@ function PersonalInfoForm({ formData, handleInputChange, handleGenderChange }) {
             <div className="mb-3">
                 <label className="form-label">Género</label> <br />
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="genero" id="generoMale" value="M" checked={formData.genero === 'M'} onChange={handleGenderChange} />
+                    <input className="form-check-input" type="radio" name="genero" id="generoMale" value="H" checked={formData.genero === 'H'} onChange={handleGenderChange} />
                     <label className="form-check-label" htmlFor="generoMale">
                         Hombre
                     </label>
                 </div>
                 <div className="form-check form-check-inline">
-                    <input className="form-check-input" type="radio" name="genero" id="generoFemale" value="F" checked={formData.genero === 'F'} onChange={handleGenderChange} />
+                    <input className="form-check-input" type="radio" name="genero" id="generoFemale" value="M" checked={formData.genero === 'M'} onChange={handleGenderChange} />
                     <label className="form-check-label" htmlFor="generoFemale">
                         Mujer
                     </label>
