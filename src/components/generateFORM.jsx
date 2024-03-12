@@ -68,13 +68,18 @@ function GenerateCurpForm() {
                         <button type="submit" className="btn btn-primary">Generar</button>
                     </div>
 
-                    <CurpGenerator curp={curp} />
-
-                    <div className={styles.spacer}>
-                        {showDownloadLink && (
-                            <a href='' onClick={handleSubmit}>Descargar CURP en PDF</a>
-                        )}
-                    </div>
+                    <CurpGenerator
+                        curp={curp}
+                        nombre={formData.nombre}
+                        apellidoPaterno={formData.apellidoPaterno}
+                        apellidoMaterno={formData.apellidoMaterno}
+                        dia={formData.dia}
+                        mes={formData.mes}
+                        anio={formData.anio}
+                        genero={formData.genero}
+                        estado={formData.estado}
+                        handleSubmit={handleSubmit}
+                    />
                 </form>
             </div>
         </div>
