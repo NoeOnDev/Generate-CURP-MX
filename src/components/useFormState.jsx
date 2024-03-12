@@ -103,7 +103,7 @@ function useFormState(initialState) {
         const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
         const nombreLetra = primerNombre.substr(0, 1);
         const fechaFormato = `${anio.substr(-2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
-        const generoLetra = genero === 'M' ? 'H' : 'M';
+        const generoLetra = genero;
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
         const primeraConsonanteInterna = (str) => {
             const match = str.replace(/^[AEIOU]/, '').substr(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/);

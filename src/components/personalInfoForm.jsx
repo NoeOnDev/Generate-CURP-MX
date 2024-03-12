@@ -6,7 +6,7 @@ function PersonalInfoForm({ formData, handleInputChange, handleGenderChange }) {
         const mes = parseInt(formData.mes, 10);
         const anio = parseInt(formData.anio, 10);
         let dias = 31;
-    
+
         if (mes === 2) {
             if (anio % 4 === 0 && (anio % 100 !== 0 || anio % 400 === 0)) {
                 dias = 29;
@@ -16,14 +16,14 @@ function PersonalInfoForm({ formData, handleInputChange, handleGenderChange }) {
         } else if ([4, 6, 9, 11].includes(mes)) {
             dias = 30;
         }
-    
+
         setDiasDelMes(dias);
-    
+
         if (parseInt(formData.dia, 10) > dias) {
             handleInputChange({ target: { id: 'dia', value: '' } });
         }
     };
-    
+
     useEffect(() => {
         actualizarDiasDelMes();
     }, [formData.mes, formData.anio]);
