@@ -224,12 +224,10 @@ function useFormState(initialState) {
 
     return {
         formData,
-        curp,
         accessCode,
         inputCode,
         isValidCode,
         showMessage,
-        showDownloadLink,
         usuarios,
         setUsuarios,
         handleClearForm,

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
 import useFormState from './useFormState';
 import PersonalInfoForm from './personalInfoForm';
@@ -9,12 +10,10 @@ import styles from '../assets/styles/generateForm.module.css';
 function GenerateCurpForm() {
     const {
         formData,
-        curp,
         accessCode,
         inputCode,
         isValidCode,
         showMessage,
-        showDownloadLink,
         usuarios,
         setUsuarios,
         handleClearForm,
@@ -34,6 +33,9 @@ function GenerateCurpForm() {
         estado: ''
     });
 
+    const [showModal, setShowModal] = useState(false);
+    const [rowIndexToDelete, setRowIndexToDelete] = useState(null);
+
     useEffect(() => {
         const savedUsuarios = localStorage.getItem('usuarios');
         if (savedUsuarios) {
@@ -44,6 +46,13 @@ function GenerateCurpForm() {
     useEffect(() => {
         localStorage.setItem('usuarios', JSON.stringify(usuarios));
     }, [usuarios]);
+
+    const handleDeleteRow = () => {
+        const updatedUsuarios = [...usuarios];
+        updatedUsuarios.splice(rowIndexToDelete, 1);
+        setUsuarios(updatedUsuarios);
+        setShowModal(false);
+    };
 
     return (
         <div className={styles.container}>
@@ -95,6 +104,7 @@ function GenerateCurpForm() {
                             <th>Estado</th>
                             <th>CURP</th>
                             <th>Descargar PDF</th>
+                            <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,13 +119,25 @@ function GenerateCurpForm() {
                                 <td>{usuario.curp}</td>
                                 <td>
                                     <button onClick={() => generatePDF(usuario)}>Descargar</button>
-
+                                </td>
+                                <td>
+                                    <button onClick={() => { setRowIndexToDelete(index); setShowModal(true); }}>Eliminar</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>¿Estás seguro de que deseas eliminar esta fila?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
+                    <Button variant="primary" onClick={handleDeleteRow}>Eliminar</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
