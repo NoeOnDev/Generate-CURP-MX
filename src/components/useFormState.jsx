@@ -93,20 +93,19 @@ function useFormState(initialState) {
     };
 
     const generateCurp = ({ nombre, apellidos, dia, mes, anio, genero, estado }) => {
-        const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-        const apellidosArray = normalize(apellidos).split(' ');
+        const apellidosArray = apellidos.toUpperCase().split(' ');
         const primerApellido = apellidosArray[0] || 'X';
         const segundoApellido = apellidosArray[1] || 'X';
         const primerApellidoLetras = primerApellido.substr(0, 2);
         const segundoApellidoLetra = segundoApellido.substr(0, 1);
-        const nombresArray = normalize(nombre).split(' ');
+        const nombresArray = nombre.toUpperCase().split(' ');
         const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
         const nombreLetra = primerNombre.substr(0, 1);
         const fechaFormato = `${anio.substr(-2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
         const generoLetra = genero;
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
         const primeraConsonanteInterna = (str) => {
-            const match = str.replace(/^[AEIOU]/, '').substr(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/);
+            const match = str.substr(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/);
             return match ? match[0] : 'X';
         };
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
