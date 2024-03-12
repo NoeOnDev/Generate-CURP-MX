@@ -108,7 +108,7 @@ function GenerateCurpForm() {
                                 <td>{usuario.estado}</td>
                                 <td>{usuario.curp}</td>
                                 <td>
-                                <button onClick={() => generatePDF(usuario)}>Descargar</button>
+                                    <button onClick={() => generatePDF(usuario)}>Descargar</button>
 
                                 </td>
                             </tr>
