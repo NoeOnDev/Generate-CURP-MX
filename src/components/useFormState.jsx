@@ -95,11 +95,11 @@ function useFormState(initialState) {
     const generateCurp = ({ nombre, apellidoPaterno, apellidoMaterno, dia, mes, anio, genero, estado }) => {
         const primerApellido = apellidoPaterno.toUpperCase() || 'X';
         const segundoApellido = apellidoMaterno.toUpperCase() || 'X';
-        const primerApellidoLetras = primerApellido.substr(0, 2);
-        const segundoApellidoLetra = segundoApellido.substr(0, 1);
+        const primerApellidoLetras = primerApellido[0] + primerApellido.substr(1).match(/[AEIOU]/)[0];
+        const segundoApellidoLetra = segundoApellido[0];
         const nombresArray = nombre.toUpperCase().split(' ');
         const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
-        const nombreLetra = primerNombre.substr(0, 1);
+        const nombreLetra = primerNombre[0];
         const fechaFormato = `${anio.substr(-2)}${mes.padStart(2, '0')}${dia.padStart(2, '0')}`;
         const generoLetra = genero;
         const estadoCodigo = estados[estado.toUpperCase()] || 'NE';
@@ -125,9 +125,10 @@ function useFormState(initialState) {
                 homoclave = (Math.floor(Math.random() * 90) + 10).toString();
             }
             curp += homoclave;
-        }
 
-        return curp;
+            return curp;
+        };
+
     };
 
     const handleSubmit = async (e) => {
