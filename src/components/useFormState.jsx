@@ -110,11 +110,11 @@ function useFormState(initialState) {
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
-
+    
         let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
-
-        if (curp === "ROMN031127HVZDTX") {
-            curp += "A6";
+        
+        if (curp === 'ROMN031127HVZDTX') {
+            curp += 'A6';
         } else {
             let homoclave;
             if (parseInt(anio) >= 2000) {
@@ -125,10 +125,9 @@ function useFormState(initialState) {
                 homoclave = (Math.floor(Math.random() * 90) + 10).toString();
             }
             curp += homoclave;
-
-            return curp;
-        };
-
+        }
+        
+        return curp;
     };
 
     const handleSubmit = async (e) => {
