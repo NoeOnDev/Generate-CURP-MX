@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import useFormState from './useFormState';
 import PersonalInfoForm from './personalInfoForm';
@@ -16,6 +16,7 @@ function GenerateCurpForm() {
         showMessage,
         showDownloadLink,
         usuarios,
+        setUsuarios,
         handleClearForm,
         handleInputChange,
         handleGenderChange,
@@ -32,6 +33,17 @@ function GenerateCurpForm() {
         genero: '',
         estado: ''
     });
+
+    useEffect(() => {
+        const savedUsuarios = localStorage.getItem('usuarios');
+        if (savedUsuarios) {
+            setUsuarios(JSON.parse(savedUsuarios));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }, [usuarios]);
 
     return (
         <div className={styles.container}>
@@ -82,7 +94,7 @@ function GenerateCurpForm() {
                             <th>Género</th>
                             <th>Estado</th>
                             <th>CURP</th>
-                            <th>Descargar PDF</th> {/* Nueva columna para el enlace de descarga */}
+                            <th>Descargar PDF</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +108,8 @@ function GenerateCurpForm() {
                                 <td>{usuario.estado}</td>
                                 <td>{usuario.curp}</td>
                                 <td>
-                                    <button onClick={() => generatePDF(usuario.curp)}>Descargar</button>
+                                <button onClick={() => generatePDF(usuario)}>Descargar</button>
+
                                 </td>
                             </tr>
                         ))}

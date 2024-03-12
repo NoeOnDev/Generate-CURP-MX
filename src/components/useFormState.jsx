@@ -159,78 +159,79 @@ function useFormState(initialState) {
     }
 };
 
-    const generatePDF = async (curpData) => {
-        const pdf = new jsPDF();
+const generatePDF = async (usuario) => {
+    const pdf = new jsPDF();
 
-        const imgData = '/curp.jpg';
-        pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
+    const imgData = '/curp.jpg';
+    pdf.addImage(imgData, 'JPEG', 7, 12, 198, 92);
 
-        const imgCuadro = '/cuadro.png';
-        pdf.addImage(imgCuadro, 'PNG', 160, 40, 40, 40);
+    const imgCuadro = '/cuadro.png';
+    pdf.addImage(imgCuadro, 'PNG', 160, 40, 40, 40);
 
-        const qrData = `${curpData}||${formData.apellidoPaterno}|${formData.apellidoMaterno || ''}|${formData.nombre}|${formData.genero}|${formData.dia}/${formData.mes}/${formData.anio}|${formData.estado}|00`;
+    const qrData = `${usuario.curp}||${usuario.apellidoPaterno}|${usuario.apellidoMaterno || ''}|${usuario.nombre}|${usuario.genero}|${usuario.dia}/${usuario.mes}/${usuario.anio}|${usuario.estado}|00`;
 
-        const qrCodeDataURL = await QRCode.toDataURL(qrData);
+    const qrCodeDataURL = await QRCode.toDataURL(qrData);
 
-        pdf.addImage(qrCodeDataURL, 'PNG', 175, 50, 23, 23);
+    pdf.addImage(qrCodeDataURL, 'PNG', 175, 50, 23, 23);
 
-        const imgAbajo = '/abajo.png';
-        pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
+    const imgAbajo = '/abajo.png';
+    pdf.addImage(imgAbajo, 'PNG', 7, 150, 198, 130);
 
-        pdf.setFontSize(8);
-        pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
+    pdf.setFontSize(8);
+    pdf.text('CURP Certificada: verificada con el Registro Civil', 128, 112);
 
-        const currentDate = format(new Date(), "dd' de 'MMMM' de 'yyyy'");
+    const currentDate = format(new Date(), "dd' de 'MMMM' de 'yyyy'");
 
-        pdf.setFontSize(7);
-        pdf.text(`Ciudad de México, a ${currentDate}`, 152, 154);
+    pdf.setFontSize(7);
+    pdf.text(`Ciudad de México, a ${currentDate}`, 152, 154);
 
-        pdf.setFontSize(8);
-        pdf.setFont("helvetica", "bold");
-        pdf.text(`${formData.nombre} ${formData.apellidoPaterno} ${formData.apellidoMaterno}`, 7, 125);
+    pdf.setFontSize(8);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(`${usuario.nombre} ${usuario.apellidoPaterno} ${usuario.apellidoMaterno}`, 7, 125);
 
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "bold");
-        pdf.text('Clave: ', 64, 52);
+    pdf.setFontSize(10);
+    pdf.setFont("helvetica", "bold");
+    pdf.text('Clave: ', 64, 52);
 
-        pdf.setFontSize(16);
-        pdf.text(`${curpData}`, 64, 59);
+    pdf.setFontSize(16);
+    pdf.text(`${usuario.curp}`, 64, 59);
 
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "bold");
-        pdf.text('Nombre: ', 64, 68);
+    pdf.setFontSize(10);
+    pdf.setFont("helvetica", "bold");
+    pdf.text('Nombre: ', 64, 68);
 
-        pdf.setFontSize(16);
-        pdf.text(`${formData.nombre} ${formData.apellidoPaterno} ${formData.apellidoMaterno}`, 64, 75);
+    pdf.setFontSize(16);
+    pdf.text(`${usuario.nombre} ${usuario.apellidoPaterno} ${usuario.apellidoMaterno}`, 64, 75);
 
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "bold");
-        pdf.text('Entidad de registro: ', 64, 85);
+    pdf.setFontSize(10);
+    pdf.setFont("helvetica", "bold");
+    pdf.text('Entidad de registro: ', 64, 85);
 
-        pdf.setFontSize(11);
-        pdf.text(`${formData.estado}`, 101, 85);
+    pdf.setFontSize(11);
+    pdf.text(`${usuario.estado}`, 101, 85);
 
-        const pdfName = 'curp.pdf';
-        pdf.save(pdfName);
-        setShowDownloadLink(true);
-    };
+    const pdfName = 'curp.pdf';
+    pdf.save(pdfName);
+    setShowDownloadLink(true);
+};
 
-    return {
-        formData,
-        curp,
-        accessCode,
-        inputCode,
-        isValidCode,
-        showMessage,
-        showDownloadLink,
-        usuarios,
-        handleClearForm,
-        handleInputChange,
-        handleGenderChange,
-        handleCodeChange,
-        handleSubmit,
-        generatePDF
-    };
+return {
+    formData,
+    curp,
+    accessCode,
+    inputCode,
+    isValidCode,
+    showMessage,
+    showDownloadLink,
+    usuarios,
+    setUsuarios,
+    handleClearForm,
+    handleInputChange,
+    handleGenderChange,
+    handleCodeChange,
+    handleSubmit,
+    generatePDF
+};
 }
 
 export default useFormState;
