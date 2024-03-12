@@ -11,6 +11,7 @@ function useFormState(initialState) {
     const [isValidCode, setIsValidCode] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [showDownloadLink, setShowDownloadLink] = useState(false);
+    const [usuarios, setUsuarios] = useState([]);
 
     const handleClearForm = () => {
         setFormData(initialState);
@@ -126,26 +127,39 @@ function useFormState(initialState) {
             }
             curp += homoclave;
         }
-        
+
         return curp;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (isValidCode) {
-            const curpData = generateCurp(formData);
-            setCurp(curpData);
-            const newCode = generateRandomCode();
-            setAccessCode(newCode);
-            setIsValidCode(false);
-            setShowMessage(false);
-            setInputCode('');
+const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValidCode) {
+        const curpData = generateCurp(formData);
+        setCurp(curpData);
+        const newCode = generateRandomCode();
+        setAccessCode(newCode);
+        setIsValidCode(false);
+        setShowMessage(false);
+        setInputCode('');
 
-            generatePDF(curpData);
-        } else {
-            setShowMessage(true);
-        }
-    };
+        const nuevoUsuario = {
+            nombre: formData.nombre,
+            apellidoPaterno: formData.apellidoPaterno,
+            apellidoMaterno: formData.apellidoMaterno,
+            dia: formData.dia,
+            mes: formData.mes,
+            anio: formData.anio,
+            genero: formData.genero,
+            estado: formData.estado,
+            curp: curpData
+        };
+        setUsuarios([...usuarios, nuevoUsuario]);
+
+        generatePDF(curpData);
+    } else {
+        setShowMessage(true);
+    }
+};
 
     const generatePDF = async (curpData) => {
         const pdf = new jsPDF();
@@ -211,6 +225,7 @@ function useFormState(initialState) {
         isValidCode,
         showMessage,
         showDownloadLink,
+        usuarios,
         handleClearForm,
         handleInputChange,
         handleGenderChange,

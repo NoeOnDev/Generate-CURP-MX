@@ -15,7 +15,7 @@ function GenerateCurpForm() {
         inputCode,
         isValidCode,
         showMessage,
-        showDownloadLink,
+        usuarios,
         handleClearForm,
         handleInputChange,
         handleGenderChange,
@@ -81,6 +81,35 @@ function GenerateCurpForm() {
                         handleSubmit={handleSubmit}
                     />
                 </form>
+            </div>
+
+            <div className="container">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Género</th>
+                            <th>Estado</th>
+                            <th>CURP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {usuarios.map((usuario, index) => (
+                            <tr key={index}>
+                                <td>{usuario.nombre}</td>
+                                <td>{usuario.apellidoPaterno}</td>
+                                <td>{usuario.apellidoMaterno}</td>
+                                <td>{`${usuario.dia}/${usuario.mes}/${usuario.anio}`}</td>
+                                <td>{usuario.genero}</td>
+                                <td>{usuario.estado}</td>
+                                <td>{usuario.curp}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
