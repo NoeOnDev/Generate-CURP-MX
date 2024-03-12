@@ -131,31 +131,29 @@ function useFormState(initialState) {
         return curp;
     };
 
-const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isValidCode) {
-        const curpData = generateCurp(formData);
-        setCurp(curpData);
-        const newCode = generateRandomCode();
-        setAccessCode(newCode);
-        setIsValidCode(false);
-        setShowMessage(false);
-        setInputCode('');
-
-        const nuevoUsuario = {
-            nombre: formData.nombre,
-            apellidoPaterno: formData.apellidoPaterno,
-            apellidoMaterno: formData.apellidoMaterno,
-            dia: formData.dia,
-            mes: formData.mes,
-            anio: formData.anio,
-            genero: formData.genero,
-            estado: formData.estado,
-            curp: curpData
-        };
-        setUsuarios([...usuarios, nuevoUsuario]);
-
-        generatePDF(curpData);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isValidCode) {
+            const curpData = generateCurp(formData);
+            setCurp(curpData);
+            const newCode = generateRandomCode();
+            setAccessCode(newCode);
+            setIsValidCode(false);
+            setShowMessage(false);
+            setInputCode('');
+    
+            const nuevoUsuario = {
+                nombre: formData.nombre,
+                apellidoPaterno: formData.apellidoPaterno,
+                apellidoMaterno: formData.apellidoMaterno,
+                dia: formData.dia,
+                mes: formData.mes,
+                anio: formData.anio,
+                genero: formData.genero,
+                estado: formData.estado,
+                curp: curpData
+            };
+            setUsuarios([...usuarios, nuevoUsuario]);
     } else {
         setShowMessage(true);
     }

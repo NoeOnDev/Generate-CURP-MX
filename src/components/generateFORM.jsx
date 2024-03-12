@@ -4,7 +4,6 @@ import useFormState from './useFormState';
 import PersonalInfoForm from './personalInfoForm';
 import StateSelection from './stateSelection';
 import AccessCodeInput from './accessCodeInput';
-import CurpGenerator from './curpGenerator';
 import styles from '../assets/styles/generateForm.module.css';
 
 function GenerateCurpForm() {
@@ -15,12 +14,14 @@ function GenerateCurpForm() {
         inputCode,
         isValidCode,
         showMessage,
+        showDownloadLink,
         usuarios,
         handleClearForm,
         handleInputChange,
         handleGenderChange,
         handleCodeChange,
         handleSubmit,
+        generatePDF
     } = useFormState({
         nombre: '',
         apellidoPaterno: '',
@@ -67,19 +68,6 @@ function GenerateCurpForm() {
                         <button type="button" className="btn btn-secondary" onClick={handleClearForm}>Limpiar</button>
                         <button type="submit" className="btn btn-primary">Generar</button>
                     </div>
-
-                    <CurpGenerator
-                        curp={curp}
-                        nombre={formData.nombre}
-                        apellidoPaterno={formData.apellidoPaterno}
-                        apellidoMaterno={formData.apellidoMaterno}
-                        dia={formData.dia}
-                        mes={formData.mes}
-                        anio={formData.anio}
-                        genero={formData.genero}
-                        estado={formData.estado}
-                        handleSubmit={handleSubmit}
-                    />
                 </form>
             </div>
 
@@ -94,6 +82,7 @@ function GenerateCurpForm() {
                             <th>Género</th>
                             <th>Estado</th>
                             <th>CURP</th>
+                            <th>Descargar PDF</th> {/* Nueva columna para el enlace de descarga */}
                         </tr>
                     </thead>
                     <tbody>
@@ -106,6 +95,9 @@ function GenerateCurpForm() {
                                 <td>{usuario.genero}</td>
                                 <td>{usuario.estado}</td>
                                 <td>{usuario.curp}</td>
+                                <td>
+                                    <button onClick={() => generatePDF(usuario.curp)}>Descargar</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
