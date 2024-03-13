@@ -103,7 +103,7 @@ function GenerateCurpForm() {
                             <th>Género</th>
                             <th>Estado</th>
                             <th>CURP</th>
-                            <th>Descargar PDF</th>
+                            {/*<th>Descargar PDF</th>*/}
                             <th>Eliminar</th>
                         </tr>
                     </thead>
@@ -117,9 +117,11 @@ function GenerateCurpForm() {
                                 <td>{usuario.genero}</td>
                                 <td>{usuario.estado}</td>
                                 <td>{usuario.curp}</td>
+                                {/*
                                 <td>
                                     <button onClick={() => generatePDF(usuario)}>Descargar</button>
                                 </td>
+                                */}
                                 <td>
                                     <button onClick={() => { setRowIndexToDelete(index); setShowModal(true); }}>Eliminar</button>
                                 </td>
