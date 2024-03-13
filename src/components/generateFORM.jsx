@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import useFormState from './useFormState';
 import PersonalInfoForm from './personalInfoForm';
@@ -118,10 +120,14 @@ function GenerateCurpForm() {
                                 <td>{usuario.estado}</td>
                                 <td>{usuario.curp}</td>
                                 <td>
-                                    <button onClick={() => generatePDF(usuario)}>Descargar</button>
+                                    <button onClick={() => generatePDF(usuario)}>
+                                        <FontAwesomeIcon icon={faDownload} />
+                                    </button>
                                 </td>
                                 <td>
-                                    <button onClick={() => { setRowIndexToDelete(index); setShowModal(true); }}>Eliminar</button>
+                                    <button onClick={() => { setRowIndexToDelete(index); setShowModal(true); }}>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
