@@ -97,9 +97,13 @@ function useFormState(initialState) {
     };
 
     const generateCurp = ({ nombre, apellidoPaterno, apellidoMaterno, dia, mes, anio, genero, estado }) => {
+        if (!nombre || !apellidoPaterno || !apellidoMaterno || !dia || !mes || !anio || !genero || !estado) {
+            console.error('Error: Todos los campos son necesarios para generar la CURP.');
+            return;
+        }
         const primerApellido = apellidoPaterno.toUpperCase() || 'X';
         const segundoApellido = apellidoMaterno.toUpperCase() || 'X';
-        const primerApellidoLetras = primerApellido[0] + primerApellido.substr(1).match(/[AEIOU]/)[0];
+        const primerApellidoLetras = primerApellido[0] + (primerApellido.substr(1).match(/[AEIOU]/) || [''])[0];
         const segundoApellidoLetra = segundoApellido[0];
         const nombresArray = nombre.toUpperCase().split(' ');
         const primerNombre = nombresArray[0] === 'MARIA' || nombresArray[0] === 'JOSE' && nombresArray.length > 1 ? nombresArray[1] : nombresArray[0];
@@ -138,25 +142,29 @@ function useFormState(initialState) {
         e.preventDefault();
         if (isValidCode) {
             const curpData = generateCurp(formData);
-            setCurp(curpData);
-            const newCode = generateRandomCode();
-            setAccessCode(newCode);
-            setIsValidCode(false);
-            setShowMessage(false);
-            setInputCode('');
-
-            const nuevoUsuario = {
-                nombre: formData.nombre,
-                apellidoPaterno: formData.apellidoPaterno,
-                apellidoMaterno: formData.apellidoMaterno,
-                dia: formData.dia,
-                mes: formData.mes,
-                anio: formData.anio,
-                genero: formData.genero,
-                estado: formData.estado,
-                curp: curpData
-            };
-            setUsuarios([...usuarios, nuevoUsuario]);
+            if (curpData) {
+                setCurp(curpData);
+                const newCode = generateRandomCode();
+                setAccessCode(newCode);
+                setIsValidCode(false);
+                setShowMessage(false);
+                setInputCode('');
+    
+                const nuevoUsuario = {
+                    nombre: formData.nombre,
+                    apellidoPaterno: formData.apellidoPaterno,
+                    apellidoMaterno: formData.apellidoMaterno,
+                    dia: formData.dia,
+                    mes: formData.mes,
+                    anio: formData.anio,
+                    genero: formData.genero,
+                    estado: formData.estado,
+                    curp: curpData
+                };
+                setUsuarios([...usuarios, nuevoUsuario]);
+            } else {
+                console.error('Error: No se pudo generar la CURP.');
+            }
         } else {
             setShowMessage(true);
         }
