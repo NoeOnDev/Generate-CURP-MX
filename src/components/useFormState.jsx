@@ -101,6 +101,17 @@ function useFormState(initialState) {
             console.error('Error: Todos los campos son necesarios para generar la CURP.');
             return;
         }
+    
+        if (apellidoPaterno.length < 2) {
+            console.error('Error: El apellido paterno debe tener al menos 2 caracteres.');
+            return;
+        }
+    
+        if (!/[aeiou]/i.test(apellidoPaterno)) {
+            console.error('Error: El apellido paterno debe contener al menos una vocal.');
+            return;
+        }
+    
         const primerApellido = apellidoPaterno.toUpperCase() || 'X';
         const segundoApellido = apellidoMaterno.toUpperCase() || 'X';
         const primerApellidoLetras = primerApellido[0] + (primerApellido.substr(1).match(/[AEIOU]/) || [''])[0];
@@ -118,9 +129,9 @@ function useFormState(initialState) {
         const primerApellidoConsonanteInterna = primeraConsonanteInterna(primerApellido);
         const segundoApellidoConsonanteInterna = primeraConsonanteInterna(segundoApellido);
         const nombreConsonanteInterna = primeraConsonanteInterna(primerNombre);
-
+    
         let curp = `${primerApellidoLetras}${segundoApellidoLetra}${nombreLetra}${fechaFormato}${generoLetra}${estadoCodigo}${primerApellidoConsonanteInterna}${segundoApellidoConsonanteInterna}${nombreConsonanteInterna}`;
-
+    
         if (curp === 'ROMN031127HVZDTX') {
             curp += 'A6';
         } else {
@@ -134,7 +145,7 @@ function useFormState(initialState) {
             }
             curp += homoclave;
         }
-
+    
         return curp;
     };
 
